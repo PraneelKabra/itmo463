@@ -104,10 +104,15 @@ data "aws_vpc" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets
 # Gather a list of all subnets per AZ per your region
-data "aws_subnets" "public" {
+data "aws_subnets" "usable" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.main.id]
+  }
+
+  filter {
+    name = "availability zone"
+    values = ["ap-south-1a", "ap-south-1b "]
   }
 }
 
