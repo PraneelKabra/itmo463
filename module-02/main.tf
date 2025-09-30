@@ -16,7 +16,6 @@ resource "aws_db_instance" "project_db" {
   skip_final_snapshot  = true
   tags                 = {
     Name = var.tag_name
-    Environment = "project"
   }
 }
 
@@ -187,7 +186,7 @@ resource "aws_autoscaling_group" "asg" {
     value               = "module-02"
     propagate_at_launch = true
   }
-    
+
   launch_template {
     id = aws_launch_template.lt.id
   }  
