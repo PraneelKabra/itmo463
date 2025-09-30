@@ -23,19 +23,19 @@ resource "aws_db_instance" "project_db" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 ##############################################################################
 resource "aws_s3_bucket" "raw_bucket" {
-  bucket = var.raw-bucket
+  bucket = var.raw_bucket
 
   tags = {
-    Name        = var.tag-name
+    Name        = var.tag_name
     Environment = "Dev"
   }
 }
 
 resource "aws_s3_bucket" "finished_bucket" {
-  bucket = var.finished-bucket
+  bucket = var.finished_bucket
 
   tags = {
-    Name        = var.tag-name
+    Name        = var.tag_name
     Environment = "Dev"
   }
 }
@@ -55,10 +55,10 @@ output "finished_url" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic
 ##############################################################################
 resource "aws_sns_topic" "user_updates" {
-  name = var.sns-topic
+  name = var.sns_topic
 
   tags = {
-    Name        = var.tag-name
+    Name        = var.tag_name
     Environment = "project"
   }
 }
@@ -72,7 +72,7 @@ resource "aws_sqs_queue" "terraform_queue" {
   name = var.sqs
 
   tags = {
-    Name        = var.tag-name
+    Name        = var.tag_name
     Environment = "project"
   }
 }
@@ -84,12 +84,12 @@ resource "aws_sqs_queue" "terraform_queue" {
 ##############################################################################
 resource "aws_launch_template" "lt" {
    image_id = var.imageid
-   instance_type = var.instance-type
-   key_name = var.key-name
+   instance_type = var.instance_type
+   key_name = var.key_name
    vpc_security_group_ids = [var.vpc_security_group_ids]
 
      tags = {
-       Name = var.tag-name
+       Name = var.tag_name
      }
     user_data = filebase64("./install-env.sh")
 }
@@ -132,7 +132,7 @@ output "list-of-azs" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 ##############################################################################
 resource "aws_lb" "lb" {
-  name               = var.elb-name
+  name               = var.elb_name
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.vpc_security_group_ids]
@@ -140,7 +140,7 @@ resource "aws_lb" "lb" {
   enable_deletion_protection = false
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
     Environment = "project"
   }
 }
@@ -155,7 +155,7 @@ output "url" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group
 ##############################################################################
 resource "aws_autoscaling_group" "asg" {
-  name                      = var.asg-name
+  name                      = var.asg_name
   max_size                  = var.max
   min_size                  = var.min
   health_check_grace_period = 300
@@ -163,7 +163,7 @@ resource "aws_autoscaling_group" "asg" {
   desired_capacity          = var.desired
   force_delete              = true
   target_group_arns         = [aws_lb_target_group.alb-lb-tg.arn]
-  availability_zones        = data.aws_availability_zones.available.names
+  vpc_zone_identifier       = data.aws_subnets.public.ids
 
   launch_template {
     id = aws_launch_template.lt.id
@@ -188,7 +188,7 @@ resource "aws_autoscaling_attachment" "asg-attach" {
 resource "aws_lb_target_group" "alb-lb-tg" {
   # Depends on - wait for LB to exist
   depends_on = [ aws_lb.lb ]
-  name = var.tg-name
+  name = var.tg_name
   target_type = "instance"
   port = 80
   protocol = "HTTP"

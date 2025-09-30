@@ -3,21 +3,21 @@
 # https://cloud-images.ubuntu.com/locator/ec2/
 imageid                = "ami-0f115dbaf1a9a8222"
 # Use t2.micro for the AWS Free Tier
-instance-type          = "t2.micro"
-key-name               = "coursera-key"
+instance_type          = "t2.micro"
+key_name               = "coursera-key"
 vpc_security_group_ids = "sg-016e23d131cc09a96"
 cnt                    = 1 
-tag-name               = "module-02"
-raw-bucket             = "pk-raw-bucket"
-finished-bucket        = "pk-finished-bucket"
-sns-topic              = "pk-topic"
+tag_name               = "module-02"
+raw_bucket             = "pk-raw-bucket"
+finished_bucket        = "pk-finished-bucket"
+sns_topic              = "pk-topic"
 sqs                    = "pk-sqs"
 dbname                 = "pkmodule02"
 uname                  = "controller"
 pass                   = "wizard168"
-elb-name               = "pk-elb"
-asg-name               = "pk-asg"
+elb_name               = "pk-elb"
+asg_name               = "pk-asg"
 min                    = 2
 max                    = 5
 desired                = 3
-tg-name                = "pk-tg"
+tg_name                = "pk-tg"
