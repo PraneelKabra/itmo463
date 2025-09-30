@@ -275,7 +275,7 @@ resource "aws_lb" "lb" {
   name               = var.elb_name
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [var.vpc_security_group_ids]
+  security_groups    = [aws_security_group.allow_http.id]
   subnets = [for subnet in aws_subnet.private : subnet.id]
 
   enable_deletion_protection = false
