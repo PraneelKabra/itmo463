@@ -23,7 +23,7 @@ resource "aws_db_instance" "project_db" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket
 ##############################################################################
 resource "aws_s3_bucket" "raw_bucket" {
-  bucket = 
+  bucket = var.raw-bucket
 
   tags = {
     Name        = var.tag-name
@@ -32,7 +32,7 @@ resource "aws_s3_bucket" "raw_bucket" {
 }
 
 resource "aws_s3_bucket" "finished_bucket" {
-  bucket = 
+  bucket = var.finished-bucket
 
   tags = {
     Name        = var.tag-name
@@ -45,15 +45,20 @@ output "raw_url" {
   value       = aws_s3_bucket.raw_bucket.bucket
 }
 
+output "finished_url" {
+  description = "Finished Bucket URL"
+  value       = aws_s3_bucket.finished_bucket.bucket
+}
+
 ##############################################################################
 # Create an SNS Topic
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic
 ##############################################################################
 resource "aws_sns_topic" "user_updates" {
-  name = 
+  name = var.sns-topic
 
   tags = {
-    Name        = 
+    Name        = var.tag-name
     Environment = "project"
   }
 }
@@ -64,7 +69,7 @@ resource "aws_sns_topic" "user_updates" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue
 ##############################################################################
 resource "aws_sqs_queue" "terraform_queue" {
-  name = 
+  name = var.sqs
 
 
   tags = {
