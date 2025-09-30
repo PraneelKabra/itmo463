@@ -31,3 +31,5 @@ variable "min" {}
 variable "max" {}
 variable "desired" {}
 variable "tg_name" {}
+variable "region" {}
+variable "num_of_azs" {}
