@@ -182,7 +182,12 @@ resource "aws_autoscaling_group" "asg" {
   force_delete              = true
   target_group_arns         = [aws_lb_target_group.alb-lb-tg.arn]
   vpc_zone_identifier       = [data.aws_subnet.subnet_az1.id, data.aws_subnet.subnet_az2.id]
-
+  tag {
+    key                 = "Name"
+    value               = "module-02"
+    propagate_at_launch = true
+  }
+    
   launch_template {
     id = aws_launch_template.lt.id
   }  
