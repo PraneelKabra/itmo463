@@ -104,7 +104,7 @@ data "aws_vpc" "main" {
 
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets
 # Gather a list of all subnets per AZ per your region
-data "aws_subnets" "usable" {
+data "aws_subnets" "public" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.main.id]
