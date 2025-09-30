@@ -16,7 +16,7 @@ variable "instance-type" {}
 variable "key-name" {}
 variable "vpc_security_group_ids" {type=string}
 variable "cnt" {}
-variable "az" { default = ["ap-south-2a", "ap-south-2b", "ap-south-2c"] }
+variable "az" { default = ["ap-south-2a", "ap-south-2b"] }
 variable "tag-name" {}
 variable "raw-bucket" {}
 variable "finished-bucket" {}
