@@ -197,7 +197,6 @@ resource "aws_lb_target_group" "alb-lb-tg" {
   vpc_id = data.aws_vpc.main
 }
   
-}
 ##############################################################################
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener
 ##############################################################################
