@@ -12,22 +12,22 @@
 # Default types are stings, lists, and maps
 
 variable "imageid" {}
-variable "instance-type" {}
-variable "key-name" {}
+variable "instance_type" {}
+variable "key_name" {}
 variable "vpc_security_group_ids" {type=string}
 variable "cnt" {}
 variable "az" { default = ["ap-south-1a", "ap-south-1b"] }
-variable "tag-name" {}
-variable "raw-bucket" {}
-variable "finished-bucket" {}
-variable "sns-topic" {}
+variable "tag_name" {}
+variable "raw_bucket" {}
+variable "finished_bucket" {}
+variable "sns_topic" {}
 variable "sqs" {}
 variable "dbname" {}
 variable "uname" {}
 variable "pass" {}
-variable "elb-name" {}
-variable "asg-name" {}
+variable "elb_name" {}
+variable "asg_name" {}
 variable "min" {}
 variable "max" {}
 variable "desired" {}
-variable "tg-name" {}
+variable "tg_name" {}
