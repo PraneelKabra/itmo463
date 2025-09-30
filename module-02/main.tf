@@ -10,7 +10,7 @@ resource "aws_db_instance" "project_db" {
   db_name              = var.dbname
   engine               = "mysql"
   engine_version       = "8.0"
-  instance_class       = "db.t2.micro"
+  instance_class       = "db.t3.micro"
   username             = var.uname
   password             = var.pass
   skip_final_snapshot  = true
