@@ -111,7 +111,7 @@ data "aws_subnets" "public" {
   }
 
   filter {
-    name = "availability zone"
+    name = "availability-zone"
     values = ["ap-south-1a", "ap-south-1b "]
   }
 }
