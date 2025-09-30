@@ -14,7 +14,7 @@
 variable "imageid" {}
 variable "instance-type" {}
 variable "key-name" {}
-variable "vpc_security_group_ids" {}
+variable "vpc_security_group_ids" {type=list(string)}
 variable "cnt" {}
 variable "az" { default = ["ap-south-2a", "ap-south-2b", "ap-south-2c"] }
 variable "tag-name" {}
