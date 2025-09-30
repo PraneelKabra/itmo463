@@ -116,15 +116,6 @@ data "aws_subnets" "public" {
   }
 }
 
-
-data "aws_subnet" "subnet_az1" {
-  id = data.aws_subnet_ids.public.ids[0]
-}
-
-data "aws_subnet" "subnet_az2" {
-  id = data.aws_subnet_ids.public.ids[1]
-}
-
 # Print out to screen a list of subnets
 output "list-of-subnets" {
   description = "List of subnets"
@@ -150,7 +141,7 @@ resource "aws_lb" "lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.vpc_security_group_ids]
-  subnets = [data.aws_subnet.subnet_az1.id, data.aws_subnet.subnet_az2.id]
+  subnets = [data.aws_subnets.public.ids[0], data.aws_subnets.public.ids[1]]
   enable_deletion_protection = false
 
   tags = {
