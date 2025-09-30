@@ -112,9 +112,18 @@ data "aws_subnets" "public" {
 
   filter {
     name = "availability-zone"
-    values = ["ap-south-1a", "ap-south-1b "]
+    values = ["ap-south-1a", "ap-south-1b"]
   }
 }
+
+data "aws_subnet" "subnet_az1" {
+  id = data.aws_subnets.public.ids[0]
+}
+
+data "aws_subnet" "subnet_az2" {
+  id = data.aws_subnets.public.ids[1]
+}
+
 
 # Print out to screen a list of subnets
 output "list-of-subnets" {
@@ -137,12 +146,12 @@ output "list-of-azs" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb
 ##############################################################################
 resource "aws_lb" "lb" {
-  name               = var.elb_name
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [var.vpc_security_group_ids]
-  subnets = [data.aws_subnets.public.ids[0], data.aws_subnets.public.ids[1]]
-  enable_deletion_protection = false
+  name                         = var.elb_name
+  internal                     = false
+  load_balancer_type           = "application"
+  security_groups              = [var.vpc_security_group_ids]
+  subnets                      = [data.aws_subnet.subnet_az1.id, data.aws_subnet.subnet_az2.id]
+  enable_deletion_protection   = false
 
   tags = {
     Name = var.tag_name
@@ -168,7 +177,7 @@ resource "aws_autoscaling_group" "asg" {
   desired_capacity          = var.desired
   force_delete              = true
   target_group_arns         = [aws_lb_target_group.alb-lb-tg.arn]
-  vpc_zone_identifier       = data.aws_subnets.public.ids
+  vpc_zone_identifier       = [data.aws_subnet.subnet_az1.id, data.aws_subnet.subnet_az2.id]
 
   launch_template {
     id = aws_launch_template.lt.id
