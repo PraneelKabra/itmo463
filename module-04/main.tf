@@ -250,7 +250,9 @@ resource "aws_launch_template" "lt" {
   instance_type                        = var.instance_type
   key_name                             = var.key_name
   vpc_security_group_ids               = [aws_security_group.allow_http.id]
-  # add aws_iam_instance_profile here
+  iam_instance_profile {
+    name = aws_iam_instance_profile.coursera_profile.name
+  }
 
   monitoring {
     enabled = false
@@ -565,14 +567,14 @@ data "aws_db_subnet_group" "database" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/db_snapshot
 # Use the latest production snapshot to create a dev instance.
 resource "aws_db_instance" "default" {
-  instance_class      = "db.t3.micro"
-  #db_name             = var.dbname
-  snapshot_identifier = var.snapshot_identifier
-  skip_final_snapshot  = true
-  username             = data.aws_secretsmanager_secret_version.project_username.secret_string
-  password             = data.aws_secretsmanager_secret_version.project_password.secret_string
-  vpc_security_group_ids = [data.aws_security_group.coursera-project.id]
-  # Add db subnet group here
+  instance_class          = "db.t3.micro"
+  db_name                 = var.dbname
+  snapshot_identifier     = var.snapshot_identifier
+  skip_final_snapshot     = true
+  username                = data.aws_secretsmanager_secret_version.project_username.secret_string
+  password                = data.aws_secretsmanager_secret_version.project_password.secret_string
+  vpc_security_group_ids  = [data.aws_security_group.coursera-project.id]
+  db_subnet_group_name    = aws_db_subnet_group.default.name
 }
 
 output "db-address" {

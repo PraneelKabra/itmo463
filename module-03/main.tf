@@ -220,7 +220,7 @@ resource "aws_launch_template" "lt" {
   image_id                             = var.imageid
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
-  key_name                             = var.key_name
+  key_name                             = aws_key_pair.coursera.key_name
   vpc_security_group_ids               = [aws_security_group.allow_http.id]
   iam_instance_profile {
     name = aws_iam_instance_profile.coursera_profile.name
@@ -233,6 +233,11 @@ resource "aws_launch_template" "lt" {
     }
   }
   user_data = filebase64("./install-env.sh")
+}
+
+resource "aws_key_pair" "coursera" {
+  key_name = "coursera-key"
+public_key = file("~/coursera-key.pub")
 }
 
 ##############################################################################

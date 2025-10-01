@@ -18,9 +18,7 @@ variable "vpc_security_group_ids" {}
 variable "cnt" {}
 variable "az" { default = ["ap-south-1a", "ap-south-1b"] }
 variable "tag_name" {}
-variable "raw_bucket" {}
-variable "finished_bucket" {}
-variable "sns_topic" {}
+variable "aws_sns_topic" {}
 variable "elb_name" {}
 variable "tg_name" {}
 variable "asg_name" {}
