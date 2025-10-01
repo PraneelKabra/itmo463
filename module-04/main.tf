@@ -7,7 +7,7 @@ resource "aws_vpc" "project" {
   enable_dns_hostnames = true
   
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_security_group" "allow_http" {
 
   tags = {
     proto = "http"
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -67,7 +67,7 @@ data "aws_security_group" "coursera-project" {
     depends_on = [ aws_security_group.allow_http ]
     filter {
     name = "tag:Name"
-    values = [var.tag-name]
+    values = [var.tag_name]
   }
 }
 
@@ -78,7 +78,7 @@ resource "aws_vpc_dhcp_options" "project" {
   domain_name_servers = ["AmazonProvidedDNS"]
   
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -95,7 +95,7 @@ resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.project.id
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -110,14 +110,14 @@ resource "aws_route_table" "example" {
   }
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
 # Now we need to associate the route_table to subnets
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association
 resource "aws_route_table_association" "subnets" {
-  count = var.number-of-azs
+  count = var.num_of_azs
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.example.id
 }
@@ -158,7 +158,7 @@ resource "aws_iam_role" "role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -211,7 +211,7 @@ resource "aws_iam_role_policy" "rds_fullaccess_policy" {
 # https://stackoverflow.com/questions/26706683/ec2-t2-micro-instance-has-no-public-dns
 resource "aws_subnet" "private" {
   depends_on = [ aws_vpc.project ]
-  count = var.number-of-azs
+  count = var.num_of_azs
   availability_zone = data.aws_availability_zones.available.names[count.index]
   vpc_id   = data.aws_vpc.project.id
   map_public_ip_on_launch = true
@@ -220,7 +220,7 @@ resource "aws_subnet" "private" {
   cidr_block = cidrsubnet(data.aws_vpc.project.cidr_block, 4, count.index + 3)
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
     Type = "private"
     Zone = data.aws_availability_zones.available.names[count.index]
   }
@@ -247,8 +247,8 @@ output "aws_subnets" {
 resource "aws_launch_template" "lt" {
   image_id                             = var.imageid
   instance_initiated_shutdown_behavior = "terminate"
-  instance_type                        = var.instance-type
-  key_name                             = var.key-name
+  instance_type                        = var.instance_type
+  key_name                             = var.key_name
   vpc_security_group_ids               = [aws_security_group.allow_http.id]
   # add aws_iam_instance_profile here
 
@@ -259,7 +259,7 @@ resource "aws_launch_template" "lt" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = var.tag-name
+      Name = var.tag_name
     }
   }
   user_data = filebase64("./install-env.sh")
@@ -271,7 +271,7 @@ resource "aws_launch_template" "lt" {
 ##############################################################################
 
 resource "aws_autoscaling_group" "asg" {
-  name                      = var.asg-name
+  name                      = var.asg_name
   depends_on                = [aws_launch_template.lt]
   desired_capacity          = var.desired
   max_size                  = var.max
@@ -287,7 +287,7 @@ resource "aws_autoscaling_group" "asg" {
 
   tag {
     key                 = "assessment"
-    value               = var.tag-name
+    value               = var.tag_name
     propagate_at_launch = true
   }
 
@@ -302,7 +302,7 @@ resource "aws_autoscaling_group" "asg" {
 ##############################################################################
 resource "aws_lb" "lb" {
   depends_on = [ aws_subnet.private ]
-  name               = var.elb-name
+  name               = var.elb_name
   internal           = false
   load_balancer_type = "application"
   #security_groups    = [var.vpc_security_group_ids]
@@ -314,7 +314,7 @@ resource "aws_lb" "lb" {
   enable_deletion_protection = false
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -351,7 +351,7 @@ resource "aws_lb_target_group" "alb-lb-tg" {
   # depends_on is effectively a waiter -- it forces this resource to wait until the listed
   # resource is ready
   depends_on  = [aws_lb.lb]
-  name        = var.tg-name
+  name        = var.tg_name
   target_type = "instance"
   port        = 80
   protocol    = "HTTP"
@@ -381,12 +381,12 @@ resource "aws_lb_listener" "front_end" {
 ##############################################################################
 
 resource "aws_s3_bucket" "raw-bucket" {
-  bucket = var.raw-s3-bucket
+  bucket = var.raw_s3_bucket
   force_destroy = true
 }
 
 resource "aws_s3_bucket" "finished-bucket" {
-  bucket = var.finished-s3-bucket
+  bucket = var.finished_s3_bucket
   force_destroy = true
 }
 
@@ -462,7 +462,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account-finished" {
 # Create SQS Queue
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue
 resource "aws_sqs_queue" "coursera_queue" {
-  name                      = var.sqs-name
+  name                      = var.sqs_name
   delay_seconds             = 90
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
@@ -470,7 +470,7 @@ resource "aws_sqs_queue" "coursera_queue" {
   visibility_timeout_seconds = 300
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -502,7 +502,7 @@ resource "aws_secretsmanager_secret" "coursera_project_username" {
   # This will automatically delete the secret upon Terraform destroy 
   recovery_window_in_days = 0
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -512,7 +512,7 @@ resource "aws_secretsmanager_secret" "coursera_project_password" {
   # This will automatically delete the secret upon Terraform destroy 
   recovery_window_in_days = 0
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 
@@ -551,7 +551,7 @@ resource "aws_db_subnet_group" "default" {
   subnet_ids = [for subnet in aws_subnet.private : subnet.id]
 
   tags = {
-    Name = var.tag-name
+    Name = var.tag_name
   }
 }
 

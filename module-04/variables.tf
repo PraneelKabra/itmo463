@@ -12,26 +12,26 @@
 # Default types are stings, lists, and maps
 
 variable "imageid" {}
-variable "instance-type" {}
-variable "key-name" {}
+variable "instance_type" {}
+variable "key_name" {}
 variable "vpc_security_group_ids" {}
 variable "cnt" {}
-variable "az" { default = ["us-east-2a", "us-east-2b", "us-east-2c"] }
-variable "tag-name" {}
-variable "raw-s3" {}
-variable "finished-s3" {}
-variable "user-sns-topic" {}
-variable "elb-name" {}
-variable "tg-name" {}
-variable "asg-name" {}
+variable "az" { default = ["ap-south-1a", "ap-south-1b"] }
+variable "tag_name" {}
+variable "raw_bucket" {}
+variable "finished_bucket" {}
+variable "sns_topic" {}
+variable "elb_name" {}
+variable "tg_name" {}
+variable "asg_name" {}
 variable "min" {}
 variable "max" {}
 variable "desired" {}
-variable "number-of-azs" {}
+variable "num_of_azs" {}
 variable "region" {}
-variable "raw-s3-bucket" {}
-variable "finished-s3-bucket" {}
+variable "raw_s3_bucket" {}
+variable "finished_s3_bucket" {}
 variable "dbname" {}
 variable "snapshot_identifier" {}
-variable "sqs-name" {}
+variable "sqs_name" {}
 variable "username" {}
