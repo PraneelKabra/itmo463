@@ -245,7 +245,7 @@ output "aws_subnets" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template
 ##############################################################################
 resource "aws_launch_template" "lt" {
-  image_id                             = var.imageid
+  image_id                             = var.custom_imageid
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
   key_name                             = var.key_name

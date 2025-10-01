@@ -11,7 +11,7 @@
 
 # Default types are stings, lists, and maps
 
-variable "imageid" {}
+variable "custom_imageid" {}
 variable "instance_type" {}
 variable "key_name" {}
 variable "vpc_security_group_ids" {}
