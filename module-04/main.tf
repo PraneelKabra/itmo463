@@ -479,9 +479,11 @@ resource "aws_sqs_queue" "coursera_queue" {
 # Create SNS Topics
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic
 resource "aws_sns_topic" "user_updates" {
+  name = var.aws_sns_topic
 
-# complete missing values here
-
+  tags = {
+    Name = var.tag_name
+  }
 }
 
 # Generate random password -- this way its never hardcoded into our variables and inserted directly as a secretcheck 
@@ -567,9 +569,13 @@ data "aws_db_subnet_group" "database" {
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/db_snapshot
 # Use the latest production snapshot to create a dev instance.
 resource "aws_db_instance" "default" {
+  depends_on = [ aws_secretsmanager_secret.coursera_project_password, aws_secretsmanager_secret.coursera_project_username ]
+  allocated_storage       = 10
+  engine                  =  "mysql"
+  engine_version          = "8.0"
   instance_class          = "db.t3.micro"
   db_name                 = var.dbname
-  snapshot_identifier     = var.snapshot_identifier
+  #snapshot_identifier     = var.snapshot_identifier
   skip_final_snapshot     = true
   username                = data.aws_secretsmanager_secret_version.project_username.secret_string
   password                = data.aws_secretsmanager_secret_version.project_password.secret_string
