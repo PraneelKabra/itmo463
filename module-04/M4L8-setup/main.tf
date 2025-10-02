@@ -3,18 +3,13 @@
 resource "aws_instance" "helloworld" {
   ami                    = var.imageid
   instance_type          = var.instance-type
-  key_name               = aws_key_pair.coursera.key_name
+  key_name               = var.key-name
   vpc_security_group_ids = [var.vpc_security_group_ids]
   user_data              = filebase64("./install-env.sh")
 
   tags = {
     Name = var.tag-name
   }
-}
-
-resource "aws_key_pair" "coursera" {
-  key_name = "coursera-key"
-public_key = file("~/coursera-key.pub")
 }
 
 # Generate random password -- this way its never hardcoded into our variables and inserted directly as a secretcheck 
