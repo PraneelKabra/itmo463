@@ -44,11 +44,11 @@ sudo -u ubuntu git clone git@github.com:PraneelKabra/itmo463.git
 
 # Start the nodejs app where it is located via PM2
 # https://pm2.keymetrics.io/docs/usage/quick-start
-cd /home/ubuntu/itmo-463/module-04
+cd /home/ubuntu/itmo463/module-04
 # Pull latest changes
 #sudo -u ubuntu git pull
 
-sudo cp /home/ubuntu/itmo-463/module-04/default /etc/nginx/sites-available/default
+sudo cp /home/ubuntu/itmo463/module-04/default /etc/nginx/sites-available/default
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
 
