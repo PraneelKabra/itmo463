@@ -3,7 +3,7 @@
 imageid                = "ami-01e0206def74fd6a7"
 # Use t2.micro for the AWS Free Tier
 instance-type          = "t2.micro"
-key-name               = "coursera-key"
+key-name               = "coursera-key.pem"
 vpc_security_group_ids = "sg-016e23d131cc09a96"
 tag-name               = "module-04"
 user-sns-topic         = "pk-sns-topic"
