@@ -100,7 +100,7 @@ const listBuckets = async () => {
 // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/interfaces/listobjectscommandoutput.html
 // 
 const listObjects = async (req,res) => {
-	const client = new S3Client({region: "us-ap-south-1" });
+	const client = new S3Client({region: "ap-south-1" });
 	const command = new ListObjectsCommand(await listBuckets());
 	try {
 		const results = await client.send(command);
