@@ -41,13 +41,13 @@ const { v4: uuidv4 } = require("uuid");
 //////////////////////////////////////////////////////////////////////////////
 // Change this to match YOUR default REGION
 //////////////////////////////////////////////////////////////////////////////
-const REGION = "us-east-2"; //e.g. "us-east-1";
+const REGION = "ap-south-1"; //e.g. "us-east-1";
 const s3 = new S3Client({ region: REGION });
 ///////////////////////////////////////////////////////////////////////////
 // I hardcoded my S3 bucket name, this you need to determine dynamically
 // Using the AWS JavaScript SDK
 ///////////////////////////////////////////////////////////////////////////
-var bucketName = '';
+var bucketName = 'pk-raw-bucket';
 //listBuckets().then(result =>{bucketName = result;}).catch(err=>{console.error("listBuckets function call failed.")});
 	var upload = multer({
         storage: multerS3({
@@ -62,7 +62,7 @@ var bucketName = '';
 //////////////////////////////////////////////////////////
 // Add S3 ListBucket code
 //
-var bucket_name = "";
+var bucket_name = "pk-raw-bucket";
 const listBuckets = async () => {
 
 	const client = new S3Client({region: REGION });
@@ -427,7 +427,7 @@ const subscribeEmailToSNSTopic = async () => {
   let topicArn = await getListOfSnsTopics();
   const params = {
     // CHANGE ENDPOINT EMAIL TO YOUR OWN
-    Endpoint: "",
+    Endpoint: "praneel.kabra@gmail.com",
     Protocol: "email",
     TopicArn: topicArn.Topics[0].TopicArn,
   };
@@ -463,7 +463,7 @@ const sendMessageViaEmail = async (req, res) => {
     Message: s3URL,
     TopicArn: snsTopicArn.Topics[0].TopicArn,
   };
-  const client = new SNSClient({ region: "us-east-2" });
+  const client = new SNSClient({ region: "ap-south-1" });
   const command = new PublishCommand(params);
   try {
     const results = await client.send(command);
