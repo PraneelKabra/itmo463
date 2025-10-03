@@ -229,6 +229,21 @@ if messagesInQueue == True:
     Key=key
     )
     
+print("Updating the RAWS3URL value to 'done' in the database...")
+
+cnx_update_raw = mysql.connector.connect(host=hosturl, user=uname, password=pword, database='company')
+cursor_update_raw = cnx_update_raw.cursor()
+
+update_raw_query = ("UPDATE entries SET RAWS3URL = 'done' WHERE ID = %s")
+
+cursor_update_raw.execute(update_raw_query, [ID])
+
+cnx_update_raw.commit()
+print(f"Record {ID} successfully updated.")
+
+cursor_update_raw.close()
+cnx_update_raw.close()
+
     #############################################################################
     # Graded component
     # Add code to update the RAWS3URL to have the value: done after the image is processed
