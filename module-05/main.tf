@@ -253,6 +253,25 @@ resource "aws_iam_role_policy" "sm_fullaccess_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "sqs_fullaccess_policy" {
+  name = "sqs_fullaccess_policy"
+  role = aws_iam_role.role.id
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sqs:*",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
 # creating a private IPv4 subnet per AZ
 # https://stackoverflow.com/questions/63991120/automatically-create-a-subnet-for-each-aws-availability-zone-in-terraform
@@ -512,8 +531,18 @@ data "aws_iam_policy_document" "allow_access_from_another_account-finished" {
 # Create SQS Queue
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue
 
+resource "aws_sqs_queue" "coursera_queue" {
+  name                      = var.sqs_name
+  delay_seconds             = 90
+  message_retention_seconds = 86400
+  receive_wait_time_seconds = 10
+  # Default is 30 seconds
+  visibility_timeout_seconds = 300
 
-
+  tags = {
+    Name = var.tag_name
+  }
+}
 
 # Create SNS Topics
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic
