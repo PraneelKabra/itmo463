@@ -338,7 +338,7 @@ finishedBucketImagesPresent = True
 for n in range(0,len(responseS3['Buckets'])):
     if "raw" in responseS3['Buckets'][n]['Name']:
         RAW_BUCKET_NAME = responseS3['Buckets'][n]['Name']
-    if "finished" in responseS3['Buckets'][n]['Name']:
+    if "fin" in responseS3['Buckets'][n]['Name']:
         FINISHED_BUCKET_NAME = responseS3['Buckets'][n]['Name']
 
 print("Collecting Object Keys contained in the Raw and Finished buckets...")
