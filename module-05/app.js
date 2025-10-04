@@ -54,7 +54,7 @@ var bucketName = 'pk-raw-bucket';
         s3: s3,
         bucket: bucketName,
         key: function (req, file, cb) {
-            cb(null, file.originalname);
+            cb(null, file.originalname.toLowerCase());
             }
     })
 	});
