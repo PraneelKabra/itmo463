@@ -152,15 +152,27 @@ if messagesInQueue == True:
     # Uploading Files to S3
     # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-uploading-files.html
     # Upload the file
+    
     print("Pushing modified image to Finished S3 bucket...")
-    for n in range(0,len(responseS3['Buckets'])):
-      if "finished" in responseS3['Buckets'][n]['Name']:
-        FIN_BUCKET_NAME = responseS3['Buckets'][n]['Name']
+    FIN_BUCKET_NAME = "pk-fin-bucket"
 
     try:
         responseS3Put = clientS3.upload_file(file_name, FIN_BUCKET_NAME, key)
+        print(f"Successfully uploaded processed image to {FIN_BUCKET_NAME}.")
     except ClientError as e:
         logging.error(e)
+        print(f"Error uploading file to bucket {FIN_BUCKET_NAME}.")
+        exit(1) # Exit with an error code
+        
+    #print("Pushing modified image to Finished S3 bucket...")
+    #for n in range(0,len(responseS3['Buckets'])):
+    #  if "finished" in responseS3['Buckets'][n]['Name']:
+    #    FIN_BUCKET_NAME = responseS3['Buckets'][n]['Name']
+
+    #try:
+    #    responseS3Put = clientS3.upload_file(file_name, FIN_BUCKET_NAME, key)
+    #except ClientError as e:
+    #    logging.error(e)
     
     # Generate Presigned URL
     # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/s3-presigned-urls.html
