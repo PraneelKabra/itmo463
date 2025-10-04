@@ -289,7 +289,7 @@ knuth = False
 vegeta = False
 
 for n in range(0,len(responseS3['Buckets'])):
-  if "finished" in responseS3['Buckets'][n]['Name']:
+  if "fin" in responseS3['Buckets'][n]['Name']:
     BUCKET_NAME = responseS3['Buckets'][n]['Name']
 
 responseS3Object = clients3.list_objects(
