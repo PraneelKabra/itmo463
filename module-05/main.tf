@@ -329,6 +329,7 @@ resource "aws_launch_template" "lt" {
     resource_type = "instance"
     tags = {
       Name = var.tag_name
+      Type = "backend"
     }
   }
   user_data = filebase64("./install-env.sh")
@@ -537,7 +538,7 @@ resource "aws_sqs_queue" "coursera_queue" {
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
   # Default is 30 seconds
-  visibility_timeout_seconds = 300
+  visibility_timeout_seconds = 180
 
   tags = {
     Name = var.tag_name
