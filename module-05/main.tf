@@ -329,7 +329,6 @@ resource "aws_launch_template" "lt" {
     resource_type = "instance"
     tags = {
       Name = var.tag_name
-      Type = "backend"
     }
   }
   user_data = filebase64("./install-env.sh")

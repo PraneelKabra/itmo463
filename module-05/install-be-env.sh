@@ -7,10 +7,10 @@
 ##############################################################################
 sudo apt update -y
 sudo apt install -y python3-dev python3-setuptools python3-pip
-sudo -u ubuntu python3 -m pip install pip --upgrade
-python3 -m pip install pillow
-python3 -m pip install boto3
-python3 -m pip install mysql-connector-python
+sudo python3 -m pip install pip --upgrade --break-system-packages
+sudo python3 -m pip install pillow --upgrade --break-system-packages
+sudo python3 -m pip install boto3 --upgrade --break-system-packages
+sudo python3 -m pip install mysql-connector-python --upgrade --break-system-packages
 
 cd /home/ubuntu
 
