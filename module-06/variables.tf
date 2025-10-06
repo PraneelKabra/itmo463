@@ -30,4 +30,3 @@ variable "raw_s3_bucket" {}
 variable "finished_s3_bucket" {}
 variable "sqs_name" {}
 variable "dynamodb_name" {}
-
