@@ -34,7 +34,7 @@ var ip = require('ip');
 //////////////////////////////////////////////////////////////////////////////
 // Change this to match YOUR default REGION
 //////////////////////////////////////////////////////////////////////////////
-const REGION = "us-east-2"; //e.g. "us-east-1";
+const REGION = "ap-south-1"; //e.g. "us-east-1";
 const s3 = new S3Client({ region: REGION });
 ///////////////////////////////////////////////////////////////////////////
 // I hardcoded my S3 bucket name, this you need to determine dynamically
@@ -198,7 +198,7 @@ const subscribeEmailToSNSTopic = async (req, res) => {
   let email = req.body['email']
   const params = {
     // CHANGE ENDPOINT EMAIL TO YOUR OWN
-    Endpoint: email,
+    Endpoint: "praneel.kabra@gmail.com",
     Protocol: "email",
     TopicArn: topicArn.Topics[0].TopicArn,
   };
