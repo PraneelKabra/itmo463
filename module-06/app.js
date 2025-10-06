@@ -198,7 +198,7 @@ const subscribeEmailToSNSTopic = async (req, res) => {
   let email = req.body['email']
   const params = {
     // CHANGE ENDPOINT EMAIL TO YOUR OWN
-    Endpoint: "praneel.kabra@gmail.com",
+    Endpoint: email,
     Protocol: "email",
     TopicArn: topicArn.Topics[0].TopicArn,
   };
