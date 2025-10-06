@@ -17,6 +17,7 @@ region = 'ap-south-1'
 clientSQS = boto3.client('sqs',region_name=region)
 clientrds = boto3.client('rds',region_name=region)
 clientSNS = boto3.client('sns',region_name=region)
+clientDynamo = boto3.client('dynamodb', region_name=region)
 # https://github.com/boto/boto3/issues/1644
 # Needed to help generate pre-signed URLs
 clientS3 = boto3.client('s3', region_name=region,config=Config(s3={'addressing_style': 'path'}, signature_version='s3v4') )
@@ -141,7 +142,16 @@ if messagesInQueue == True:
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb/client/update_item.html
     ###################################################################
     # add presigned URL code to Item in DynamoDB
- 
+
+    print("Updating DynamoDB record with the presigned URL...")
+    responseDynamoUpdate = clientDynamo.update_item(
+    TableName=responseDynamoTables['TableNames'][0],
+    Key={'RecordNumber': {'S': responseMessages['Messages'][0]['Body']}},
+    UpdateExpression="set FINSIHEDS3URL = :u",
+    ExpressionAttributeValues={':u': {'S': responsePresigned}},
+    ReturnValues="UPDATED_NEW"
+    )
+
     #################################################################################
     # SEND Presigned URL to SNS Topics
     #################################################################################
@@ -185,7 +195,14 @@ if messagesInQueue == True:
     # Add code to update the RAWS3URL to have the value: done after the image is processed
     #############################################################################
 
-
+    print("Updating RAWS3URL to 'done' in DynamoDB...")
+    responseDynamoUpdateDone = clientDynamo.update_item(
+        TableName=responseDynamoTables['TableNames'][0],
+        Key={'RecordNumber': {'S': responseMessages['Messages'][0]['Body']}},
+        UpdateExpression="set RAWS3URL = :d",
+        ExpressionAttributeValues={':d': {'S': 'done'}},
+        ReturnValues="UPDATED_NEW"
+    )
 
     #############################################################################
     # Extra challenge, not gradeded...
