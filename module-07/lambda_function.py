@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     except ClientError as e:
         logging.error(e)
     
-  return {
+    return {
       'statusCode': 200,
       #'body': json.dumps(responsePresigned)
       'body': json.dumps('Hello from Lambda!')
