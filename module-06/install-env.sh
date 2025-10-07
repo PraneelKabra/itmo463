@@ -20,7 +20,7 @@ sudo systemctl start nginx
 ##############################################################################
 curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
-sudo apt-get install nodejs -y
+sudo apt install nodejs -y
 node -v
 ##############################################################################
 # Use NPM (node package manager to install AWS JavaScript SDK)
@@ -33,7 +33,7 @@ node -v
 # <https://pm2.keymetrics.io/docs/usage/quick-start/>. This will require
 # the install of PM2 via npm as well.
 cd /home/ubuntu
-sudo -u ubuntu npm install @aws-sdk/client-sqs @aws-sdk/client-s3 @aws-sdk/client-sns express multer multer-s3 uuid ip
+sudo npm install @aws-sdk/client-sqs @aws-sdk/client-s3 @aws-sdk/client-sns @aws-sdk/client-dynamodb express multer multer-s3 uuid ip
 sudo npm install pm2 -g
 
 # Command to clone your private repo via SSH usign the Private key
@@ -50,4 +50,4 @@ sudo cp /home/ubuntu/itmo463/module-06/default /etc/nginx/sites-available/defaul
 sudo systemctl daemon-reload
 sudo systemctl restart nginx
 
-sudo pm2 start app.js
+sudo pm2 start /home/ubuntu/itmo463/module-06/app.js
