@@ -331,7 +331,7 @@ resource "aws_autoscaling_group" "asg" {
   max_size                  = var.max
   min_size                  = var.min
   health_check_grace_period = 300
-  health_check_type         = "EC2"
+  health_check_type         = "ELB"
   target_group_arns         = [aws_lb_target_group.alb-lb-tg.arn]
   # place in all AZs
   # Use this if you only have the default subnet per AZ
