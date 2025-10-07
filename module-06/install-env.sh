@@ -20,7 +20,7 @@ sudo systemctl start nginx
 ##############################################################################
 curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
 sudo bash nodesource_setup.sh
-sudo apt install -y nodejs
+sudo apt-get install nodejs -y
 node -v
 ##############################################################################
 # Use NPM (node package manager to install AWS JavaScript SDK)
