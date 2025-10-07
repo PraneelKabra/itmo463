@@ -608,14 +608,68 @@ resource "aws_iam_role_policy" "s3_fullaccess_lambda_policy" {
 # Create IAM Role Policy for SNS, SQS, and DynamoDB attach to the lambda role
 ##############################################################################
 
+resource "aws_iam_role_policy" "sqs_fullaccess_lambda_policy" {
+  name = "sqs_fullaccess_lambda_policy"
+  role = aws_iam_role.iam_for_lambda.id
 
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sqs:*",
+          "sqs-object-lambda:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
+resource "aws_iam_role_policy" "sns_fullaccess_lambda_policy" {
+  name = "sns_fullaccess_lambda_policy"
+  role = aws_iam_role.iam_for_lambda.id
 
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sns:*",
+          "sns-object-lambda:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
-# Here
+resource "aws_iam_role_policy" "dynamodb_fullaccess_lambda_policy" {
+  name = "dynamodb_fullaccess_lambda_policy"
+  role = aws_iam_role.iam_for_lambda.id
 
-
-
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:*",
+          "dynamodb-object-lambda:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
 
 
 # Create Lambda Function
@@ -688,3 +742,4 @@ resource "aws_lambda_permission" "with_s3" {
   principal     = "s3.amazonaws.com"
   source_arn    = aws_s3_bucket.raw-bucket.arn
   source_account         = var.source_account
+}
