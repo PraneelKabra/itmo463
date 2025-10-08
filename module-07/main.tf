@@ -686,10 +686,7 @@ resource "aws_lambda_function" "coursera_lambda" {
   timeout       = "120"
 
   //source_code_hash = data.archive_file.lambda.output_base64sha256
-
   runtime = "python3.10"
-
-  layers = ["arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-p310-Pillow:1"]
 
   environment {
     variables = {
