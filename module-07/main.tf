@@ -689,6 +689,8 @@ resource "aws_lambda_function" "coursera_lambda" {
 
   runtime = "python3.10"
 
+  layers = ["arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-p310-Pillow:1"]
+
   environment {
     variables = {
       Name = var.tag_name
