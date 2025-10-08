@@ -671,6 +671,11 @@ resource "aws_iam_role_policy" "dynamodb_fullaccess_lambda_policy" {
   })
 }
 
+data "archive_file" "lambda_zip" {
+  type        = "zip"
+  source_file = "lambda_function.py"
+  output_path = "my_deployment_package.zip"
+}
 
 # Create Lambda Function
 # https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function
@@ -678,15 +683,15 @@ resource "aws_lambda_function" "coursera_lambda" {
   # If the file is not in the current working directory you will need to include a
   # path.module in the filename.
   # https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-create-dependencies
-  filename      = "my_deployment_package.zip"
-  function_name = var.lambda_name
-  role          = aws_iam_role.iam_for_lambda.arn
+  filename          = data.archive_file.lambda_zip.output_path
+  function_name     = var.lambda_name
+  role              = aws_iam_role.iam_for_lambda.arn
   # https://stackoverflow.com/questions/69740875/why-do-i-get-error-handler-and-runtime-must-be-set-when-packagetype-is-zip-wh
-  handler       = "lambda_function.lambda_handler"
-  timeout       = "120"
-
-  //source_code_hash = data.archive_file.lambda.output_base64sha256
-  runtime = "python3.10"
+  handler           = "lambda_function.lambda_handler"
+  timeout           = "120"
+  source_code_hash  = data.archive_file.lambda_zip.output_base64sha256
+  runtime           = "python3.10"
+  layers            = ["arn:aws:lambda:ap-south-1:770693421928:layer:Klayers-p310-Pillow:1"]
 
   environment {
     variables = {
