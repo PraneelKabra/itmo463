@@ -15,7 +15,6 @@ region = 'ap-south-1'
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sqs.html
 clientSQS = boto3.client('sqs',region_name=region)
-clientrds = boto3.client('rds',region_name=region)
 clientSNS = boto3.client('sns',region_name=region)
 clientDynamo = boto3.client('dynamodb', region_name=region)
 # https://github.com/boto/boto3/issues/1644
@@ -24,7 +23,7 @@ clientS3 = boto3.client('s3', region_name=region,config=Config(s3={'addressing_s
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
 print("Getting a list of DynamoDB Tables...")
-
+responseDynamoTables = clientDynamo.list_tables()
 
 # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sqs/client/list_queues.html
 print("Getting a list of SQS queues...")
