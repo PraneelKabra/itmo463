@@ -60,11 +60,11 @@ def lambda_handler(event, context):
 
         logger.info("Listing SNS topic ARNs...")
         responseTopics = clientSNS.list_topics()
-        topic_arn = responseTopics['Topics'][0]['TopicARN']
+        topic_arn = responseTopics['Topics'][0]['TopicArn']
         logger.info(f"Message: {messageToSend}")
 
         clientSNS.publish(
-            TopicARN = topic_arn,
+            TopicArn = topic_arn,
             Subject="Your image is ready to download!",
             Message=messageToSend,
         )
