@@ -61,6 +61,7 @@ def lambda_handler(event, context):
         logger.info("Listing SNS topic ARNs...")
         responseTopics = clientSNS.list_topics()
         topic_arn = responseTopics['Topics'][0]['TopicArn']
+        messageToSend = "Your image " + str(object_key) + " has been converted to grayscale and can be downloaded at: " + str(presigned_url)
         logger.info(f"Message: {messageToSend}")
 
         clientSNS.publish(
