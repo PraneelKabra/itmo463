@@ -17,6 +17,7 @@ def lambda_handler(event, context):
     region = 'ap-south-1'
     clientS3 = boto3.client('s3', region_name=region, config=Config(s3={'addressing_style': 'path'}, signature_version='s3v4'))
     dynamodb_client = boto3.client('dynamodb', region_name=region)
+    clientSNS = boto3.client('sns', region_name=region)
 
     try:
         # This code is indented again to be inside the 'try' block
@@ -56,6 +57,18 @@ def lambda_handler(event, context):
             }
         )
         logger.info(f"DynamoDB table updated for {record_number}")
+
+        logger.info("Listing SNS topic ARNs...")
+        responseTopics = clientSNS.list_topics()
+        topic_arn = responseTopics['Topics'][0]['TopicARN']
+        logger.info(f"Message: {messageToSend}")
+
+        clientSNS.publish(
+            TopicARN = topic_arn,
+            Subject="Your image is ready to download!",
+            Message=messageToSend,
+        )
+        logger.info("Message published")
 
         clientS3.delete_object(Bucket=bucket_name, Key=object_key)
         logger.info(f"Deleted original object from {bucket_name}")

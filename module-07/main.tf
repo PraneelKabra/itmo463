@@ -696,6 +696,7 @@ resource "aws_lambda_function" "coursera_lambda" {
   environment {
     variables = {
       Name = var.tag_name
+      sns_topic_arn = aws_sns_topic.user_updates.arn
     }
   }
 }
