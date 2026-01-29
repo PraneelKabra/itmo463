@@ -40,6 +40,17 @@ sudo npm install pm2 -g
 ####################################################################
 # Note - change "hajek.git" to be your private repo name (hawk ID) #
 ####################################################################
+echo "-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtz
+c2gtZWQyNTUxOQAAACA5da+MojgzJ7FT02xIv1mVCcn8N9pX0MpQj16s/KS4nQAA
+AIgHhV/rB4Vf6wAAAAtzc2gtZWQyNTUxOQAAACA5da+MojgzJ7FT02xIv1mVCcn8
+N9pX0MpQj16s/KS4nQAAAEAwUQIBATAFBgMrZXAEIgQgBKMWOe7iCo5IiXkdij0/
+0zl1r4yiODMnsVPTbEi/WZUJyfw32lfQylCPXqz8pLidAAAAAAECAwQF
+-----END OPENSSH PRIVATE KEY-----" > /home/ubuntu/.ssh/id_rsa
+
+chmod 600 /home/ubuntu/.ssh/id_rsa
+chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa
+ssh-keyscan github.com >> /home/ubuntu/.ssh/known_hosts
 sudo -u ubuntu git clone git@github.com:PraneelKabra/itmo463.git
 
 # Start the nodejs app where it is located via PM2
